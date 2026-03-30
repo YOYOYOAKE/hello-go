@@ -1,0 +1,12 @@
+[
+    {
+        "name": "github",
+        "url": "https://github.com",
+        "timeout_ms": 3000
+    },
+    {
+        "name": "local-api",
+        "url": "http://127.0.0.1:8080/health",
+        "timeout_ms": 1000
+    }
+]
