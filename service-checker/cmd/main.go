@@ -13,6 +13,8 @@ func main() {
 	filepath := flag.String("c", "config/config.json", "Your Config File Path")
 	outputpath := flag.String("o", "output/output.txt", "Output File Path")
 
+	flag.Parse()
+
 	// 2 解析配置文件
 	targets, err := config.ParseConfig(*filepath)
 	if err != nil {
