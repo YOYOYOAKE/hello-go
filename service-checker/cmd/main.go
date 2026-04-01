@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"service-checker/internal/checker"
 	"service-checker/internal/config"
+	"service-checker/internal/model"
 	"service-checker/internal/store"
 )
 
@@ -26,15 +27,19 @@ func main() {
 	// 3 定时启动检查进程
 	checkResult := checker.CheckTargets(targets)
 
-	// 4 保存检查结果（以两种方式打印）
+	// // 4 保存检查结果（以接口的方式遍历打印）
 	consolePrinter := store.ConsolePrintr{}
-	consolePrinter.WriteResult(checkResult)
-
 	filePrinter := store.FilePrinter{Path: *outputpath}
-	err = filePrinter.WriteResult(checkResult)
-	if err != nil {
-		fmt.Println("Failed to Save Check Result:", err)
-		return
-	}
 
+	resultStore := []model.ResultStore{}
+	resultStore = append(resultStore, consolePrinter)
+	resultStore = append(resultStore, filePrinter)
+
+	for _, s := range resultStore {
+		err := s.WriteResult(checkResult)
+		if err != nil {
+			fmt.Println("Failed to Save Check Result:", err)
+			return
+		}
+	}
 }
