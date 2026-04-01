@@ -1,7 +1,6 @@
 package checker
 
 import (
-	"fmt"
 	"net/http"
 	"service-checker/internal/model"
 	"time"
@@ -11,11 +10,11 @@ func checkOne(t model.Target) model.CheckResult {
 	// 1 创建自定义请求对象
 	req, err := http.NewRequest("GET", t.Url, nil)
 	if err != nil {
-		fmt.Printf("Failed to Check \"%v\": %v \n", t.Name, err)
 		return model.CheckResult{
 			Name:        t.Name,
 			Ok:          false,
 			Duration_ms: -1,
+			FailReason:  err.Error(),
 		}
 	}
 
@@ -27,22 +26,21 @@ func checkOne(t model.Target) model.CheckResult {
 
 	res, err := cli.Do(req)
 	if err != nil {
-		fmt.Printf("Failed to Check \"%v\": %v \n", t.Name, err)
 		return model.CheckResult{
 			Name:        t.Name,
 			Ok:          false,
 			Duration_ms: -1,
+			FailReason:  err.Error(),
 		}
 	}
-
-	defer res.Body.Close()
 
 	// 4 结束计时并计算时间
 	d := time.Since(start).Milliseconds()
 
 	return model.CheckResult{
 		Name:        t.Name,
-		Ok:          res.StatusCode >= 200 && res.StatusCode < 400,
+		Ok:          res.StatusCode == http.StatusOK,
 		Duration_ms: d,
+		FailReason:  "",
 	}
 }

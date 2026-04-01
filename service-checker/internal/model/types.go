@@ -10,8 +10,9 @@ type CheckResult struct {
 	Name        string
 	Ok          bool
 	Duration_ms int64
+	FailReason  string
 }
 
 type ResultStore interface {
-	WriteResult(checkResult []CheckResult)
+	WriteResult(checkResult []CheckResult) error
 }

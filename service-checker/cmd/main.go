@@ -31,6 +31,10 @@ func main() {
 	consolePrinter.WriteResult(checkResult)
 
 	filePrinter := store.FilePrinter{Path: *outputpath}
-	filePrinter.WriteResult(checkResult)
+	err = filePrinter.WriteResult(checkResult)
+	if err != nil {
+		fmt.Println("Failed to Save Check Result:", err)
+		return
+	}
 
 }
