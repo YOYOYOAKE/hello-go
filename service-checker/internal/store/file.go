@@ -13,10 +13,14 @@ type FilePrinter struct {
 
 func (f FilePrinter) WriteResult(checkResult []model.CheckResult) error {
 	// 1 创建本地文件及目录
-	os.MkdirAll(filepath.Dir(f.Path), 0755)
+	err := os.MkdirAll(filepath.Dir(f.Path), 0755)
+	if err != nil {
+		return fmt.Errorf("Failed to Create Directory: %w", err)
+	}
+
 	file, err := os.Create(f.Path)
 	if err != nil {
-		return fmt.Errorf("Failed to Write Local File: %w", err)
+		return fmt.Errorf("Failed to Create File: %w", err)
 	}
 
 	// 2 注册关闭文件的 Defer
