@@ -34,12 +34,14 @@ func checkOne(t model.Target) model.CheckResult {
 		}
 	}
 
+	defer res.Body.Close()
+
 	// 4 结束计时并计算时间
 	d := time.Since(start).Milliseconds()
 
 	return model.CheckResult{
 		Name:        t.Name,
-		Ok:          res.StatusCode == http.StatusOK,
+		Ok:          res.StatusCode >= 200 && res.StatusCode < 300,
 		Duration_ms: d,
 		FailReason:  "",
 	}
