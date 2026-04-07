@@ -28,7 +28,7 @@ func (f FilePrinter) WriteResult(checkResult []model.CheckResult) error {
 
 	fmt.Fprintf(file, "Name \t Available \t Duration(ms) \t Fail Reason \n")
 	for _, res := range checkResult {
-		fmt.Fprintf(file, "%s \t %v \t %d \t %s \n", res.Name, res.Ok, res.Duration_ms, res.FailReason)
+		fmt.Fprintf(file, "%s \t %v \t %d \t %s \n", res.Name, res.OK, res.DurationMS, res.FailReason)
 	}
 
 	return nil

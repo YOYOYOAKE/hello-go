@@ -8,18 +8,18 @@ import (
 
 func checkOne(t model.Target) model.CheckResult {
 	// 1 创建自定义请求对象
-	req, err := http.NewRequest("GET", t.Url, nil)
+	req, err := http.NewRequest("GET", t.URL, nil)
 	if err != nil {
 		return model.CheckResult{
-			Name:        t.Name,
-			Ok:          false,
-			Duration_ms: -1,
-			FailReason:  err.Error(),
+			Name:       t.Name,
+			OK:         false,
+			DurationMS: -1,
+			FailReason: err.Error(),
 		}
 	}
 
 	// 2 创建自定义客户端
-	cli := http.Client{Timeout: time.Duration(t.Timeout_ms) * time.Millisecond}
+	cli := http.Client{Timeout: time.Duration(t.TimeoutMS) * time.Millisecond}
 
 	// 3 开始计时并发送自定义请求
 	start := time.Now()
@@ -27,10 +27,10 @@ func checkOne(t model.Target) model.CheckResult {
 	res, err := cli.Do(req)
 	if err != nil {
 		return model.CheckResult{
-			Name:        t.Name,
-			Ok:          false,
-			Duration_ms: -1,
-			FailReason:  err.Error(),
+			Name:       t.Name,
+			OK:         false,
+			DurationMS: -1,
+			FailReason: err.Error(),
 		}
 	}
 
@@ -40,9 +40,9 @@ func checkOne(t model.Target) model.CheckResult {
 	d := time.Since(start).Milliseconds()
 
 	return model.CheckResult{
-		Name:        t.Name,
-		Ok:          res.StatusCode >= 200 && res.StatusCode < 300,
-		Duration_ms: d,
-		FailReason:  "",
+		Name:       t.Name,
+		OK:         res.StatusCode >= 200 && res.StatusCode < 300,
+		DurationMS: d,
+		FailReason: "",
 	}
 }

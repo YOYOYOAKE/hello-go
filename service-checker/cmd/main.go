@@ -28,7 +28,7 @@ func main() {
 	checkResult := checker.CheckTargets(targets)
 
 	// // 4 保存检查结果（以接口的方式遍历打印）
-	consolePrinter := store.ConsolePrintr{}
+	consolePrinter := store.ConsolePrinter{}
 	filePrinter := store.FilePrinter{Path: *outputpath}
 
 	resultStore := []model.ResultStore{}
